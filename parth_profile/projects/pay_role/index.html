@@ -1,0 +1,196 @@
+<!DOCTYPE html> 
+<html lang="en"> 
+
+<head> 
+<meta charset="UTF-8"> 
+<meta http-equiv="X-UA-Compatible" content="IE=edge"> 
+<meta name="viewport" content= 
+	"width=device-width, initial-scale=1.0"> 
+<style> 
+	body {
+		font-family: Arial, sans-serif;
+		background-color: #f5f5f5;
+		margin: 0;
+		padding: 0;
+	}
+
+	.container { 
+		display: flex; 
+		flex-direction: column; 
+		width: 35vw; 
+		margin: 50px auto; 
+		padding: 30px; 
+		background-color: #fff; 
+		border-radius: 10px;
+		box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+		text-align: center;
+	} 
+
+	.header { 
+		font-size: 28px;
+		color: #333;
+		margin-bottom: 20px;
+	} 
+
+	.description { 
+		color: #666;
+		margin-bottom: 20px;
+	} 
+
+	.label { 
+		font-weight: bold;
+		color: #333;
+	} 
+
+	.input-field { 
+		width: calc(100% - 20px); 
+		padding: 10px; 
+		margin: 10px 0; 
+		border: 1px solid #ccc; 
+		border-radius: 5px; 
+		box-sizing: border-box; 
+		font-size: 16px; 
+		transition: border-color 0.3s;
+	} 
+
+	.input-field:focus {
+		border-color: #007bff;
+	}
+
+	.check-btn { 
+		margin-top: 20px; 
+		padding: 12px 30px; 
+		background-color: #007bff; 
+		color: #fff; 
+		border: none; 
+		border-radius: 5px; 
+		cursor: pointer; 
+		transition: background-color 0.3s ease; 
+		font-size: 18px;
+	}
+
+	.check-btn:hover { 
+		background-color: #0056b3; 
+	} 
+
+	.error-message { 
+		color: #ff0000;
+		margin-top: 10px;
+		font-size: 14px;
+	} 
+
+	.table { 
+		width: 100%;
+		border-collapse: collapse;
+		margin-top: 20px;
+	} 
+
+	.row, .header-row { 
+		border-bottom: 1px solid #ccc;
+	} 
+
+	.header-row th, .row td { 
+		padding: 12px;
+		text-align: center;
+		font-size: 16px;
+		color: #333;
+	} 
+
+	.header-row th { 
+		background-color: #007bff;
+		color: #fff;
+		font-weight: bold;
+	} 
+
+	.row td { 
+		font-size: 16px;
+		color: #333;
+	} 
+</style> 
+</head> 
+
+<body> 
+<div class="container"> 
+	<header class="header"><strong> 
+			Pay Role Management
+	</strong></header> 
+	<p class="description"> 
+		Enter the bill amount and the cash given by the customer 
+		and know the minimum number of notes to return 
+	</p> 
+
+	<label class="label" for="input-bill">Enter the bill amount</label> 
+	<input class="input-field" id="bill" type="number" placeholder="Enter bill amount" /> 
+	<label class="label" for="cash-given">Cash Given</label> 
+	<input class="input-field" id="cash" type="number" placeholder="Enter cash given" /> 
+	<button class="check-btn" id="btn">Check</button> 
+	<p id="error" class="error-message"> 
+	</p> 
+
+	<table class="table"> 
+		<caption> 
+			Return Change</caption> 
+		<tr class="header-row"> 
+			<th>No of Notes</th> 
+			<th>2000</th> 
+			<th>500</th> 
+			<th>100</th> 
+			<th>20</th> 
+			<th>10</th> 
+			<th>5</th> 
+			<th>1</th> 
+		</tr> 
+		<tr class="row"> 
+			<td>No of Notes</td> 
+			<td class="no-of-notes"></td> 
+			<td class="no-of-notes"></td> 
+			<td class="no-of-notes"></td> 
+			<td class="no-of-notes"></td> 
+			<td class="no-of-notes"></td> 
+			<td class="no-of-notes"></td> 
+			<td class="no-of-notes"></td> 
+		</tr> 
+	</table> 
+</div> 
+<script> 
+	var inputBill = document.getElementById("bill"); 
+	var cashGiven = document.getElementById("cash"); 
+	var checkBtn = document.getElementById("btn"); 
+	var errMsg = document.getElementById("error"); 
+	var noOfNotes = document.querySelectorAll(".no-of-notes"); 
+	var notes = [2000, 500, 100, 20, 10, 5, 1]; 
+
+	function errorHandle(error) { 
+		errMsg.style.display = "block"; 
+		errMsg.innerText = error; 
+	} 
+
+	function hideMessage() { 
+		errMsg.style.display = "none"; 
+	} 
+
+	function clickHandler() { 
+		hideMessage(); 
+		if (inputBill.value < 0) { 
+			errorHandle("Please Enter a positive value"); 
+		} else { 
+			var remaining = cashGiven.value - inputBill.value; 
+			if (remaining < 0) { 
+			errorHandle("Give me more"); 
+			} else { 
+			for (var i = 0; i < notes.length; i++) { 
+				const paisa = Math.trunc(remaining / notes[i]); 
+				remaining %= notes[i]; 
+				noOfNotes[i].innerText = paisa; 
+
+			} 
+
+			} 
+		} 
+	} 
+
+	checkBtn.addEventListener("click", clickHandler); 
+</script> 
+</body> 
+
+</html>
